@@ -4,12 +4,14 @@ const Collection = require("./models/category");
 const categoryRouter = require("./routes/category");
 const bodyParser = require("body-parser");
 const passport = require("passport");
+const cors = require("cors");
 const cookieSession = require("cookie-session");
 
 require("dotenv").config();
 const passportSetup = require("./config/passport");
 
 const app = express();
+app.use(cors("*"));
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -46,6 +48,13 @@ try {
 
 app.get("/", (req, res) => {
   res.send("hello world");
+});
+
+app.get("/login", (req, res, next) => {
+  console.log("hit");
+  passport.authenticate("google", {
+    scope: ["profile"],
+  });
 });
 
 app.get(
