@@ -1,19 +1,18 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Collection = require("./models/category");
-const categoryRouter = require("./routes/category");
 const bodyParser = require("body-parser");
-const passport = require("passport");
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
 const jwt_decode = require("jwt-decode");
 require("dotenv").config();
-const passportSetup = require("./config/passport");
+
 const User = require("./models/user");
 const session = require("express-session");
+const categoryRouter = require("./routes/category");
 
+//start server
 const app = express();
 
+//add middleware
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
@@ -42,6 +41,7 @@ app.use(
   })
 );
 
+//connect to mongo db
 try {
   mongoose.connect(
     process.env.DB_URI,
@@ -52,6 +52,7 @@ try {
   console.log("could not connect to mongo");
 }
 
+//routes. need to move these
 app.get("/", function (req, res) {
   if (req.session.page_views) {
     req.session.page_views++;
@@ -60,18 +61,6 @@ app.get("/", function (req, res) {
     req.session.page_views = 1;
     res.send("Welcome to this page for the first time!");
   }
-});
-
-app.get("/cookie", (req, res) => {
-  const options = {
-    secure: false,
-    httpOnly: false,
-    domain: ".your.domain.com",
-  };
-  return res
-    .cookie("cookieName", "cookieValue", options)
-    .status(200)
-    .send("cookie sent");
 });
 
 app.post("/google", async (req, res) => {
@@ -86,8 +75,6 @@ app.post("/google", async (req, res) => {
     console.log("user found ");
     console.log({ user });
   } else {
-    console.log(decodedUser);
-
     const _user = new User({
       firstName: decodedUser.given_name,
       lastName: decodedUser.family_name,
@@ -96,15 +83,7 @@ app.post("/google", async (req, res) => {
     user = await _user.save();
   }
   req.session.userId = user.id;
-  console.log({ session: req.session });
-  console.log({ userId: user.id });
   res.json(user);
-});
-
-//callback route for google to redirect to -> this time we have code for our profile info
-app.get("/google/callback", passport.authenticate("google"), (req, res) => {
-  console.log({ req });
-  res.send(req.user);
 });
 
 app.use("/categories", categoryRouter);
