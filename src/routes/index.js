@@ -1,7 +1,8 @@
 const express = require("express");
-const categoryRouter = require("./category");
+const categoryRouter = require("./collections");
 const userRouter = require("./user");
 const googleRouter = require("./auth");
+const paymentsRouter = require("./payments");
 
 const router = express.Router();
 
@@ -17,8 +18,9 @@ router.get("/", function (req, res) {
   }
 });
 
-router.use("/categories", categoryRouter);
+router.use("/collections", categoryRouter);
 router.use("/users", userRouter);
 router.use("/auth", googleRouter);
+router.use("/payments", paymentsRouter);
 
 module.exports = router;

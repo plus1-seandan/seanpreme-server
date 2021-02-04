@@ -1,15 +1,34 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const { Sequelize } = require("sequelize");
+const bcrypt = require("bcryptjs");
 
-const userSchema = new Schema({
-  firstName: String,
-  lastName: String,
-  username: String,
-  email: String,
-  googleId: String,
-  password: String,
+const db = require("../db");
+
+const User = db.define("user", {
+  email: {
+    type: Sequelize.STRING,
+    unique: true,
+    validate: {
+      isEmail: {
+        args: true,
+        msg: "invalid email",
+      },
+    },
+  },
+  firstName: {
+    type: Sequelize.STRING,
+  },
+  lastName: {
+    type: Sequelize.STRING,
+  },
+  password: {
+    type: Sequelize.STRING,
+  },
 });
 
-const User = mongoose.model("user", userSchema);
+User.addHook("beforeValidate", async (user) => {
+  const hashedPassword = await bcrypt.hash(user.password, 12);
+  user.password = hashedPassword;
+});
+User.associate = (models) => {};
 
 module.exports = User;
