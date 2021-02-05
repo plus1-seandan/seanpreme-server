@@ -1,30 +1,25 @@
 const express = require("express");
 const models = require("../models");
-const Category = require("../models/collection");
+const { getPagingData, getPagination } = require("../utils/collection");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const id = parseInt(req.query.id);
-  const items = await models.Collection.findAll({
-    where: { id },
-    include: {
-      model: models.Item,
-    },
-  });
-  res.json(items);
-});
-
-router.post("/", async (req, res) => {
-  console.log(req.body);
-  const category = new Category({
-    name: req.body.name,
-  });
+  const { _page, _limit, _collectionId } = req.query;
+  //setting up number of items to be fetched
+  const { limit, offset } = getPagination(_page, _limit);
   try {
-    const response = await category.save();
-    res.send(response);
-  } catch (e) {
-    console.log(e);
-    res.json(e);
+    const collection = await models.Collection.findOne({
+      where: { id: _collectionId },
+    });
+    const _items = await models.Item.findAndCountAll({
+      where: { collectionId: _collectionId },
+      limit,
+      offset,
+    });
+    const items = getPagingData(_items, _page, limit);
+    return res.status(200).json({ collection, items });
+  } catch (error) {
+    return res.status(500).send(error.message);
   }
 });
 

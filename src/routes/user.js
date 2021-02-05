@@ -28,4 +28,16 @@ router.post("/", async (req, res) => {
     res.send("fail");
   }
 });
+
+router.post("/logout", async (req, res) => {
+  try {
+    if (req.session) {
+      req.session.destroy();
+    }
+    res.send("success");
+  } catch (e) {
+    console.log(e);
+    res.send("fail");
+  }
+});
 module.exports = router;

@@ -3,32 +3,51 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const router = express.Router();
 const jwt_decode = require("jwt-decode");
-const { models } = require("../db");
+const models = require("../models");
 
 router.post("/google", async (req, res) => {
-  if (req.session.userId) {
-    console.log("already logged in");
-  }
-  const decodedUser = jwt_decode(req.body.token);
-  let user = await models.User.findOne({ where: { email: decodedUser.email } });
-  if (!user) {
-    user = await models.User.create({
-      firstName: decodedUser.given_name,
-      lastName: decodedUser.family_name,
-      email: decodedUser.email,
+  try {
+    const decodedUser = jwt_decode(req.body.token);
+    let user = await models.User.findOne({
+      where: { email: decodedUser.email },
     });
+    if (!user) {
+      user = await models.User.create({
+        firstName: decodedUser.given_name,
+        lastName: decodedUser.family_name,
+        email: decodedUser.email,
+        password: "google",
+      });
+    }
+    req.session.userId = user.id;
+    res.send(user);
+  } catch (e) {
+    console.log(e);
+    res.status(400).send("fail");
   }
-  req.session.userId = user.id;
-  res.json(user);
 });
 
 router.post("/login", async (req, res) => {
-  const user = await models.User.findOne({ where: { email: req.body.email } });
-  if (user && (await bcrypt.compare(req.body.password, user.password))) {
-    //email and password matched
-    req.session.userId = user.id;
+  try {
+    const user = await models.User.findOne({
+      where: { email: req.body.email },
+    });
+    if (user && (await bcrypt.compare(req.body.password, user.password))) {
+      //email and password matched
+      req.session.userId = user.id;
+      res.json(user);
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(400).send("fail");
   }
-  res.json(user);
+});
+
+router.get("/logged-in", async (req, res) => {
+  if (req.session.userId) {
+    res.send("logged in");
+  }
+  res.send("not logged in");
 });
 
 module.exports = router;
