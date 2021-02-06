@@ -14,7 +14,7 @@ const Item = db.define("item", {
     type: Sequelize.STRING,
   },
   price: {
-    type: Sequelize.DECIMAL(0, 2),
+    type: Sequelize.DECIMAL(20, 2),
   },
 });
 

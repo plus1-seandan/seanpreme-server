@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "nodemon src/server.js"
   },
   "keywords": [],
@@ -26,10 +26,14 @@
     "pg": "^8.5.1",
     "sequelize": "^6.5.0",
     "stripe": "^8.133.0",
+    "supremenewyork-api": "^1.2.1",
     "unirest": "^0.6.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "chai": "^4.3.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.2.1",
     "nodemon": "^2.0.7"
   }
 }

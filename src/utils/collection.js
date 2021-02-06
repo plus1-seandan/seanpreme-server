@@ -17,4 +17,18 @@ const getPagingData = (data, page, limit) => {
   return { totalItems, items, totalPages, currentPage };
 };
 
-module.exports = { getPagination, getPagingData };
+const getSort = (sort) => {
+  if (!sort) {
+    return null;
+  }
+  if (sort === "new") {
+    return ["createdAt", "DESC"];
+  }
+  if (sort === "pricelowhigh") {
+    return ["price", "ASC"];
+  }
+  if (sort === "pricehighlow") {
+    return ["price", "DESC"];
+  }
+};
+module.exports = { getPagination, getPagingData, getSort };
