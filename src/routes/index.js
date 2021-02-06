@@ -5,8 +5,15 @@ const googleRouter = require("./auth");
 const paymentsRouter = require("./payments");
 const models = require("../models");
 const images = require("../data");
+const productsRouter = require("./products");
 
 const router = express.Router();
+
+router.use("/collections", categoryRouter);
+router.use("/users", userRouter);
+router.use("/auth", googleRouter);
+router.use("/payments", paymentsRouter);
+router.use("/products", productsRouter);
 
 //test api
 //routes. need to move these
@@ -82,10 +89,5 @@ router.get("/", async function (req, res) {
   }
   res.send("success");
 });
-
-router.use("/collections", categoryRouter);
-router.use("/users", userRouter);
-router.use("/auth", googleRouter);
-router.use("/payments", paymentsRouter);
 
 module.exports = router;
