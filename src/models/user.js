@@ -29,6 +29,12 @@ User.addHook("beforeValidate", async (user) => {
   const hashedPassword = await bcrypt.hash(user.password, 12);
   user.password = hashedPassword;
 });
-User.associate = (models) => {};
+User.associate = (models) => {
+  User.belongsToMany(models.Item, {
+    through: models.Favorite,
+    foreignKey: "userId",
+    primaryKey: true,
+  });
+};
 
 module.exports = User;

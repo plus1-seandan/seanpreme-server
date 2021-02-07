@@ -20,6 +20,12 @@ const Item = db.define("item", {
 
 Item.associate = (models) => {
   Item.belongsTo(models.Collection);
+
+  Item.belongsToMany(models.User, {
+    through: models.Favorite,
+    foreignKey: "productId",
+    primaryKey: true,
+  });
 };
 
 module.exports = Item;

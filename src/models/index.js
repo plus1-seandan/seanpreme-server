@@ -3,6 +3,7 @@ const Sequelize = require("sequelize");
 const Collection = require("./collection");
 const User = require("./user");
 const Item = require("./item");
+const Favorite = require("./favorite");
 
 const db = require("../db");
 
@@ -10,6 +11,7 @@ const models = {
   User,
   Collection,
   Item,
+  Favorite,
 };
 
 //if a model has associate attribute, create the associations
