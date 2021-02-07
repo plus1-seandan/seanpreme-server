@@ -14,26 +14,20 @@
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
-    "connect-mongo": "^3.2.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "jwt-decode": "^3.1.2",
-    "mongoose": "^5.11.14",
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.5.1",
     "sequelize": "^6.5.0",
     "stripe": "^8.133.0",
-    "supremenewyork-api": "^1.2.1",
     "unirest": "^0.6.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "chai": "^4.3.0",
-    "chai-http": "^4.3.0",
-    "mocha": "^8.2.1",
     "nodemon": "^2.0.7"
   }
 }

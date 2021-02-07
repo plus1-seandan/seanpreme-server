@@ -6,7 +6,7 @@ const paymentsRouter = require("./payments");
 const models = require("../models");
 const images = require("../data");
 const productsRouter = require("./products");
-const { default: axios } = require("axios");
+const axios = require("axios");
 
 const router = express.Router();
 
@@ -179,17 +179,6 @@ router.get("/shoes", async function (req, res) {
       price: shoe.retailPrice,
       description: shoe.title,
     });
-  });
-  res.send("success");
-});
-
-router.get("/supreme", async function (req, res) {
-  supreme.find("sled", "all", (item, error) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log(item);
-    }
   });
   res.send("success");
 });
