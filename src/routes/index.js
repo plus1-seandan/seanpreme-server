@@ -16,9 +16,7 @@ router.use("/auth", googleRouter);
 router.use("/payments", paymentsRouter);
 router.use("/products", productsRouter);
 
-//test api
-//routes. need to move these
-
+//all routes here are utilized for data population such as images...
 router.get("/caps", async (req, res) => {
   const { data: results } = await axios.get(
     "https://api.unsplash.com/search/photos?query=caps-hats&client_id=zs-D5ntCczDVzsYHZD8xke9-Yl3yDdhRNVSm7k27xr8&per_page=100"
