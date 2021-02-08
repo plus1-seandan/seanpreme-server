@@ -3,6 +3,8 @@ const axios = require("axios");
 
 const models = require("../models");
 const { Sequelize } = require("../models");
+const jwt_decode = require("jwt-decode");
+const { parseToken } = require("../utils/auth");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -19,8 +21,9 @@ router.get("/", async (req, res) => {
 
 router.get("/favorites", async (req, res) => {
   try {
+    const decodedUser = parseToken(req);
     const _fav = await models.Favorite.findAll({
-      where: { userId: req.session.userId },
+      where: { userId: decodedUser.user.id },
       attributes: ["productId"],
     });
     let favIds = _fav.map(function (fav) {

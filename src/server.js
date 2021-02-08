@@ -16,42 +16,11 @@ const main = async () => {
   const app = express();
   //add middleware
 
-  app.set("proxy", 1);
-  const RedisStore = connectRedis(session);
-  const redisClient = redis.createClient({
-    host: process.env.REDIS_HOST || "localhost",
-  });
+  app.use(cors());
 
-  app.use(
-    cors({
-      // origin: process.env.CORS_ORIGIN,
-      origin: "http://truculent-sister.surge.sh",
-      credentials: true,
-    })
-  );
-  app.use(
-    bodyParser.urlencoded({
-      extended: true,
-    })
-  );
+  app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
   app.use(cookieParser());
-  app.use(
-    session({
-      name: "seanscookie",
-      store: new RedisStore({
-        client: redisClient,
-      }),
-      secret: "somesecretkey",
-      resave: false,
-      saveUninitialized: true,
-      proxy: true,
-      cookie: {
-        domain: "http://truculent-sister.surge.sh",
-        secure: true,
-      },
-    })
-  );
 
   await db.sync({
     models,

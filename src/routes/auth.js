@@ -3,7 +3,10 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const router = express.Router();
 const jwt_decode = require("jwt-decode");
+require("dotenv").config();
+
 const models = require("../models");
+const { createTokens } = require("../utils/auth");
 
 router.post("/google", async (req, res) => {
   try {
@@ -29,13 +32,14 @@ router.post("/google", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const user = await models.User.findOne({
+    let user = await models.User.findOne({
       where: { email: req.body.email },
     });
     if (user && (await bcrypt.compare(req.body.password, user.password))) {
       //email and password matched
-      req.session.userId = user.id;
-      res.json(user);
+      // req.session.userId = user.id;
+      const token = await createTokens(user, process.env.SECRET_KEY);
+      res.json({ ...user.dataValues, token });
     }
   } catch (e) {
     console.log(e);
