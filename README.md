@@ -12,16 +12,16 @@ Note: This is in combination with the backend project ([repo](https://github.com
 
 ## Tech Stack
 
-Node.js
-Express
-Postgres
-Sequelize
-
-Deployment:
-AWS (EC2)
-Docker
-Docker Compose
-Nginx
+Node.js<br/>
+Express<br/>
+Postgres<br/>
+Sequelize<br/>
+<br/>
+Deployment:<br/>
+AWS (EC2)<br/>
+Docker<br/>
+Docker Compose<br/>
+Nginx<br/>
 
 ## Install
 
