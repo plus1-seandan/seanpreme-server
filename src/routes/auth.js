@@ -22,8 +22,8 @@ router.post("/google", async (req, res) => {
         password: "google",
       });
     }
-    req.session.userId = user.id;
-    res.send(user);
+    const token = await createTokens(user, process.env.SECRET_KEY);
+    res.json({ ...user.dataValues, token });
   } catch (e) {
     console.log(e);
     res.status(400).send("fail");

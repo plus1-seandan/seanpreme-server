@@ -44,10 +44,11 @@ router.get("/favorites", async (req, res) => {
 
 router.post("/favorites", async (req, res) => {
   try {
+    const decodedUser = parseToken(req);
     const { productId } = req.body;
     await models.Favorite.create({
       productId,
-      userId: req.session.userId,
+      userId: decodedUser.user.id,
     });
     return res.send("success");
   } catch (error) {
