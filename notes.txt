@@ -1,0 +1,7 @@
+docker exec -i 0e77889c8f0c psql -U postgres -d ecommerce < ecommerce_dump.sql
+
+docker exec -it <container-id> psql -U <username> -d postgres -c "DROP DATABASE <dbname>;"
+
+docker exec -it <container-id> psql -U <username> -d postgres -c "CREATE DATABASE <dbname>;"
+
+docker exec -u postgres pg_test psql postgres postgres -f docker-entrypoint-initdb.d/dump.sql

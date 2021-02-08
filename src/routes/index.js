@@ -48,7 +48,6 @@ router.get("/jackets", async (req, res) => {
   const { data: results } = await axios.get(
     "https://api.unsplash.com/search/photos?query=fashion-jacket&client_id=zs-D5ntCczDVzsYHZD8xke9-Yl3yDdhRNVSm7k27xr8&per_page=100"
   );
-  // console.log({ data: data });
   const capsData = await models.Item.findAll({ where: { collectionId: 3 } });
   idx = 0;
   for (let i = 0; i < capsData.length; i++) {
