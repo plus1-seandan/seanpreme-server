@@ -1,5 +1,9 @@
 version: "3.3"
 services:
+  redis:
+    image: redis
+    networks:
+      - webnet
   db:
     image: postgres
     environment:
@@ -23,6 +27,7 @@ services:
       - webnet
     environment:
       DB_HOST: db
+      REDIS_HOST: redis
       # SERVER_URL: http://ec2-3-137-203-144.us-east-2.compute.amazonaws.com
     depends_on:
       - db

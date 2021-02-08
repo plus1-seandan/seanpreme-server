@@ -6,8 +6,8 @@ const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const session = require("express-session");
 const redis = require("redis");
-const redisClient = redis.createClient();
-const redisStore = require("connect-redis")(session);
+const connectRedis = require("connect-redis");
+
 const router = require("./routes");
 const db = require("./db");
 const { models } = require("./db");
@@ -15,14 +15,17 @@ const { models } = require("./db");
 const main = async () => {
   const app = express();
   //add middleware
-  app.set("trust proxy", 1);
-  redisClient.on("error", (err) => {
-    console.log("Redis error: ", err);
+
+  app.set("proxy", 1);
+  const RedisStore = connectRedis(session);
+  const redisClient = redis.createClient({
+    host: process.env.REDIS_HOST || "localhost",
   });
+
   app.use(
     cors({
       // origin: process.env.CORS_ORIGIN,
-      origin: "http://localhost:3000",
+      origin: "http://truculent-sister.surge.sh",
       credentials: true,
     })
   );
@@ -36,21 +39,17 @@ const main = async () => {
   app.use(
     session({
       name: "seanscookie",
-      store: new redisStore({
-        host: "localhost",
-        port: 6379,
+      store: new RedisStore({
         client: redisClient,
-        ttl: 86400,
       }),
-      cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 365 * 10, //10 years
-        httpOnly: true,
-        sameSite: "lax",
-        secure: false, //cookie only works in https
-      },
-      saveUninitialized: false,
       secret: "somesecretkey",
       resave: false,
+      saveUninitialized: true,
+      proxy: true,
+      cookie: {
+        domain: "http://truculent-sister.surge.sh",
+        secure: true,
+      },
     })
   );
 
