@@ -8,7 +8,7 @@ Backend for the SeanPreme eCommerce website.
 
 Check out a demo of this app [here](http://truculent-sister.surge.sh/).
 
-Note: This is in combination with the backend project ([repo](https://github.com/seanysdan/eccommerce-app)).
+Note: This is in combination with the frontend project ([repo](https://github.com/seanysdan/eccommerce-app)).
 
 ## Tech Stack
 
